@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ubq2.Logistics.Common.Entities;
@@ -29,7 +30,13 @@ namespace Ubq2.Logistics.Packing.Queries
 
             var queryResult = await Reader.Read(queryObject, cancellationToken);
 
-            return Result.Create(queryResult, GetPackageItemsQueryStatus.Ok);
+            var packageItems = queryResult.Select(static q => new PackageItem(
+                SiteId: q.SiteId,
+                PackageId: q.PackageId,
+                ItemId: q.ItemId,
+                CreatedTime: q.CreatedTime)).ToList();
+
+            return Result.Create(packageItems, GetPackageItemsQueryStatus.Ok);
         }
     }
 }

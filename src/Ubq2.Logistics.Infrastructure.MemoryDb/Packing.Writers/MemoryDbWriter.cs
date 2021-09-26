@@ -1,33 +1,31 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ubq2.Logistics.Packing.DataObjects;
 using Ubq2.Logistics.Packing.Entities;
 
 namespace Ubq2.Logistics.Packing.Writers
 {
     public record MemoryDbWriter(
-        ConcurrentDictionary<string, PackageHeader> PackageHeaders,
-        ConcurrentDictionary<string, PackageItem> PackageItems)
+        ConcurrentDictionary<string, PackageHeaderDataObject> PackageHeaders,
+        ConcurrentDictionary<string, PackageItemDataObject> PackageItems)
         : IWriter
     {
         public async Task Write(PackageInsertOneCommand commandObject, CancellationToken cancellationToken)
         {
             await Task.Yield();
 
-            var entity = new PackageHeader(
+            var dataObject = new PackageHeaderDataObject(
                 SiteId: commandObject.SiteId,
                 PackageId: string.IsNullOrEmpty(commandObject.PackageId) ? $"{Guid.NewGuid()}" : commandObject.PackageId,
-                PackageStatus: PackageStatus.Open,
+                PackageStatus: PackageStatusDataObject.Open,
                 CreatedTime: commandObject.CreatedTime,
                 UpdatedTime: DateTimeOffset.MinValue);
 
-            var key = $"{commandObject.SiteId}, {commandObject.PackageId}";
+            var key = $"{dataObject.SiteId}, {dataObject.PackageId}";
 
-            PackageHeaders.TryAdd(key, entity);
+            PackageHeaders.TryAdd(key, dataObject);
         }
 
         public async Task Write(PackageUpdateOneCommand commandObject, CancellationToken cancellationToken)
@@ -38,10 +36,10 @@ namespace Ubq2.Logistics.Packing.Writers
 
             PackageHeaders.AddOrUpdate(
                 key: key,
-                addValueFactory: key => new PackageHeader(
+                addValueFactory: key => new PackageHeaderDataObject(
                     SiteId: commandObject.SiteId,
                     PackageId: string.IsNullOrEmpty(commandObject.PackageId) ? $"{Guid.NewGuid()}" : commandObject.PackageId,
-                    PackageStatus: PackageStatus.Open,
+                    PackageStatus: PackageStatusDataObject.Open,
                     CreatedTime: commandObject.UpdatedTime,
                     UpdatedTime: DateTimeOffset.MinValue),
                 updateValueFactory: (key, value) => value with { UpdatedTime = commandObject.UpdatedTime });
@@ -55,7 +53,7 @@ namespace Ubq2.Logistics.Packing.Writers
             {
                 var key = $"{commandObject.SiteId}, {commandObject.PackageId}, {itemId}";
 
-                var entity = new PackageItem(
+                var entity = new PackageItemDataObject(
                     SiteId: commandObject.SiteId,
                     PackageId: commandObject.PackageId,
                     CreatedTime: commandObject.CreatedTime,

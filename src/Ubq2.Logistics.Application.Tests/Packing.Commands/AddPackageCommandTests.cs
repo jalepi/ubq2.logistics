@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ubq2.Logistics.Packing.Entities;
+using Ubq2.Logistics.Packing.DataObjects;
 using Ubq2.Logistics.Packing.Writers;
 using Xunit;
 
@@ -17,8 +14,8 @@ namespace Ubq2.Logistics.Packing.Commands
         public async Task Handle_WhenDataProvided_DataPersisted()
         {
             // arrange
-            var packageHeaders = new ConcurrentDictionary<string, PackageHeader>();
-            var packageItems = new ConcurrentDictionary<string, PackageItem>();
+            var packageHeaders = new ConcurrentDictionary<string, PackageHeaderDataObject>();
+            var packageItems = new ConcurrentDictionary<string, PackageItemDataObject>();
 
             var logger = new NullLogger<AddPackageCommandHandler>();
             var writer = new MemoryDbWriter(packageHeaders, packageItems);

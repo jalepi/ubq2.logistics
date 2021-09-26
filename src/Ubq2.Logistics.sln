@@ -10,15 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ubq2.Logistics.Domain", "Ubq2.Logistics.Domain\Ubq2.Logistics.Domain.csproj", "{D4D90457-7FC1-4512-9237-E8AAAABBD406}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ubq2.Logistics.Domain", "Ubq2.Logistics.Domain\Ubq2.Logistics.Domain.csproj", "{D4D90457-7FC1-4512-9237-E8AAAABBD406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ubq2.Logistics.Application", "Ubq2.Logistics.Application\Ubq2.Logistics.Application.csproj", "{AB747229-3A41-4931-8FCD-0AAF08ED77D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ubq2.Logistics.Application", "Ubq2.Logistics.Application\Ubq2.Logistics.Application.csproj", "{AB747229-3A41-4931-8FCD-0AAF08ED77D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ubq2.Logistics.Domain.Tests", "Ubq2.Logistics.Domain.Tests\Ubq2.Logistics.Domain.Tests.csproj", "{A5112EC3-8C79-40DC-ABB2-85AEABA8A7A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ubq2.Logistics.Domain.Tests", "Ubq2.Logistics.Domain.Tests\Ubq2.Logistics.Domain.Tests.csproj", "{A5112EC3-8C79-40DC-ABB2-85AEABA8A7A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ubq2.Logistics.Application.Tests", "Ubq2.Logistics.Application.Tests\Ubq2.Logistics.Application.Tests.csproj", "{8ADBC93C-86CC-4C43-B79B-67F89554B666}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ubq2.Logistics.Application.Tests", "Ubq2.Logistics.Application.Tests\Ubq2.Logistics.Application.Tests.csproj", "{8ADBC93C-86CC-4C43-B79B-67F89554B666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ubq2.Logistics.Infrastructure.MemoryDb", "Ubq2.Logistics.Infrastructure.MemoryDb\Ubq2.Logistics.Infrastructure.MemoryDb.csproj", "{F308F77A-B814-47D7-B2FB-D587BFFCE2D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ubq2.Logistics.Infrastructure.MemoryDb", "Ubq2.Logistics.Infrastructure.MemoryDb\Ubq2.Logistics.Infrastructure.MemoryDb.csproj", "{F308F77A-B814-47D7-B2FB-D587BFFCE2D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

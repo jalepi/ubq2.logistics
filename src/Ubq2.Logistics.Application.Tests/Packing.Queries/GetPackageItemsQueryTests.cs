@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ubq2.Logistics.Packing.Entities;
+using Ubq2.Logistics.Packing.DataObjects;
 using Ubq2.Logistics.Packing.Readers;
 using Xunit;
 
@@ -17,8 +14,8 @@ namespace Ubq2.Logistics.Packing.Queries
         public async Task Handle_WhenDataAvailable_ReturnsAvailableData()
         {
             // arrange
-            var packageHeaders = new ConcurrentDictionary<string, PackageHeader>();
-            var packageItems = new ConcurrentDictionary<string, PackageItem>
+            var packageHeaders = new ConcurrentDictionary<string, PackageHeaderDataObject>();
+            var packageItems = new ConcurrentDictionary<string, PackageItemDataObject>
             {
                 ["site:123, package:a, item:abc.001"] = new(SiteId: "site:123", PackageId: "package:a", ItemId: "item:abc.001", CreatedTime: DateTimeOffset.Now),
                 ["site:123, package:a, item:abc.002"] = new(SiteId: "site:123", PackageId: "package:a", ItemId: "item:abc.002", CreatedTime: DateTimeOffset.Now),

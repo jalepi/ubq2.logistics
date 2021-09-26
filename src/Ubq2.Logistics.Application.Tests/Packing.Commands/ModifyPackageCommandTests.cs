@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ubq2.Logistics.Packing.Entities;
+using Ubq2.Logistics.Packing.DataObjects;
 using Ubq2.Logistics.Packing.Writers;
 using Xunit;
 
@@ -17,13 +14,13 @@ namespace Ubq2.Logistics.Packing.Commands
         public async Task Handle_WhenDataProvided_DataPersisted()
         {
             // arrange
-            var packageHeaders = new ConcurrentDictionary<string, PackageHeader>
+            var packageHeaders = new ConcurrentDictionary<string, PackageHeaderDataObject>
             {
-                ["site:123, package:a"] = new(SiteId: "site:123", PackageId: "package:a", PackageStatus: PackageStatus.Open, DateTimeOffset.Now, DateTimeOffset.MinValue),
-                ["site:123, package:b"] = new(SiteId: "site:123", PackageId: "package:b", PackageStatus: PackageStatus.Open, DateTimeOffset.Now, DateTimeOffset.MinValue),
-                ["site:123, package:c"] = new(SiteId: "site:123", PackageId: "package:c", PackageStatus: PackageStatus.Open, DateTimeOffset.Now, DateTimeOffset.MinValue),
+                ["site:123, package:a"] = new(SiteId: "site:123", PackageId: "package:a", PackageStatus: PackageStatusDataObject.Open, DateTimeOffset.Now, DateTimeOffset.MinValue),
+                ["site:123, package:b"] = new(SiteId: "site:123", PackageId: "package:b", PackageStatus: PackageStatusDataObject.Open, DateTimeOffset.Now, DateTimeOffset.MinValue),
+                ["site:123, package:c"] = new(SiteId: "site:123", PackageId: "package:c", PackageStatus: PackageStatusDataObject.Open, DateTimeOffset.Now, DateTimeOffset.MinValue),
             };
-            var packageItems = new ConcurrentDictionary<string, PackageItem>();
+            var packageItems = new ConcurrentDictionary<string, PackageItemDataObject>();
 
             var logger = new NullLogger<ModifyPackageCommandHandler>();
             var writer = new MemoryDbWriter(packageHeaders, packageItems);

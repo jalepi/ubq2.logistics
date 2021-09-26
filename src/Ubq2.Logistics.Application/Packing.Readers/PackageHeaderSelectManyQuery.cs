@@ -2,7 +2,7 @@
 
 namespace Ubq2.Logistics.Packing.Readers
 {
-    public record PackageSelectManyQuery(string SiteId, PackageStatus PackageStatus)
+    public record PackageHeaderSelectManyQuery(string SiteId, PackageStatus PackageStatus)
     {
     }
 }
