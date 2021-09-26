@@ -5,8 +5,8 @@ namespace Ubq2.Logistics.Packing.Writers
 {
     public interface IWriter
     {
-        Task Write(PackageInsertOneCommand commandObject, CancellationToken cancellationToken);
-        Task Write(PackageUpdateOneCommand commandObject, CancellationToken cancellationToken);
+        Task Write(PackageHeaderInsertOneCommand commandObject, CancellationToken cancellationToken);
+        Task Write(PackageHeaderUpdateOneCommand commandObject, CancellationToken cancellationToken);
         Task Write(PackageItemInsertManyCommand commandObject, CancellationToken cancellationToken);
         Task Write(PackageItemDeleteManyCommand commandObject, CancellationToken cancellationToken);
     }

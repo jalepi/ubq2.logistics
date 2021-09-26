@@ -22,7 +22,7 @@ namespace Ubq2.Logistics.Packing.Commands
     {
         public async Task<VoidResult<AddPackageCommandStatus>> Handle(AddPackageCommand request, CancellationToken cancellationToken)
         {
-            var commandObject = new PackageInsertOneCommand(
+            var commandObject = new PackageHeaderInsertOneCommand(
                 SiteId: request.SiteId,
                 PackageId: request.PackageId,
                 CreatedTime: request.RequestTime);

@@ -12,7 +12,7 @@ namespace Ubq2.Logistics.Packing.Writers
         ConcurrentDictionary<string, PackageItemDataObject> PackageItems)
         : IWriter
     {
-        public async Task Write(PackageInsertOneCommand commandObject, CancellationToken cancellationToken)
+        public async Task Write(PackageHeaderInsertOneCommand commandObject, CancellationToken cancellationToken)
         {
             await Task.Yield();
 
@@ -28,7 +28,7 @@ namespace Ubq2.Logistics.Packing.Writers
             PackageHeaders.TryAdd(key, dataObject);
         }
 
-        public async Task Write(PackageUpdateOneCommand commandObject, CancellationToken cancellationToken)
+        public async Task Write(PackageHeaderUpdateOneCommand commandObject, CancellationToken cancellationToken)
         {
             await Task.Yield();
 

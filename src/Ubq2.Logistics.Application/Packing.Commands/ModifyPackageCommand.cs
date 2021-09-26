@@ -22,7 +22,7 @@ namespace Ubq2.Logistics.Packing.Commands
     {
         public async Task<VoidResult<ModifyPackageCommandStatus>> Handle(ModifyPackageCommand request, CancellationToken cancellationToken)
         {
-            var commandObject = new PackageUpdateOneCommand(
+            var commandObject = new PackageHeaderUpdateOneCommand(
                 SiteId: request.SiteId,
                 PackageId: request.PackageId,
                 UpdatedTime: request.RequestTime);
