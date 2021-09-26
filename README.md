@@ -8,6 +8,20 @@ Basic microservice for logistics
 
 ### Basic Entity definitions
 
+Business CRUD
+
+CREATE: add
+READ: get
+UPDATE: modify
+DELETE: remove
+
+Database CRUD
+
+CREATE: insert
+READ: select
+UPDATE: update
+DELETE: delete
+
 #### Package Headers
 - siteId: string
 - packageId: string
@@ -33,19 +47,19 @@ Basic microservice for logistics
 
 returns package headers, operationStatus
 
-#### CreatePackageCommand
+#### AddPackageCommand
 - siteId: string
 - packageId: string?
 
 returns packageId, operationStatus
 
-#### UpdatePackageCommand
+#### ModifyPackageCommand
 - siteId: string
 - packageId: string
 
 returns void, operationStatus
 
-#### UpdatePackageStatusCommand
+#### ModifyPackageStatusCommand
 - siteId: string
 - packageId: string
 - packageStatus: string
@@ -79,15 +93,15 @@ returns void, operationStatus
 
 `GET api/{{siteId}}/packages`
 
-#### Create package header
+#### Add package header
 
 `POST api/{{siteId}}/packages`
 
-#### Update package header
+#### Modify package header
 
 `PUT api/{{siteId}}/packages/{{packageId}}`
 
-#### Update package status
+#### Modify package status
 
 `PUT api/{{siteId}}/packages/{{packageId}}/status/{{packageStatus}}`
 
@@ -114,6 +128,9 @@ Use cases implementation
 
 #### Ubq2.Logistics.Domain
 Enterprise entities
+
+#### Ubq2.Logistics.Infrastructure.MemoryDb
+Data readers and writers using in memory as persistence layer
 
 #### Ubq2.Logistics.Infrastructure.MongoDb
 Data readers and writers using MongoDb as persistence layer

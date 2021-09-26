@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Ubq2.Logistics</RootNamespace>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ubq2.Logistics.Application\Ubq2.Logistics.Application.csproj" />
+    <ProjectReference Include="..\Ubq2.Logistics.Domain\Ubq2.Logistics.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
