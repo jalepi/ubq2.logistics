@@ -9,9 +9,7 @@ using Ubq2.Logistics.Packing.Entities;
 
 namespace Ubq2.Logistics.Packing.Readers
 {
-    public record MemoryDbReader(
-        ConcurrentDictionary<string, PackageHeader> PackageHeaders,
-        ConcurrentDictionary<string, PackageItem> PackageItems)
+    public record MemoryDbReader(ConcurrentDictionary<string, PackageHeader> PackageHeaders)
         : IReader
     {
         public async Task<IReadOnlyCollection<PackageHeader>> Read(PackageSelectManyQuery queryObject, CancellationToken cancellationToken)
@@ -19,13 +17,6 @@ namespace Ubq2.Logistics.Packing.Readers
             await Task.Yield();
 
             return PackageHeaders.Values.Where(o => o.SiteId == queryObject.SiteId).ToArray();
-        }
-
-        public async Task<IReadOnlyCollection<PackageItem>> Read(PackageItemSelectManyQuery queryObject, CancellationToken cancellationToken)
-        {
-            await Task.Yield();
-
-            return PackageItems.Values.Where(o => o.SiteId == queryObject.SiteId && o.PackageId == queryObject.PackageId).ToArray();
         }
     }
 }

@@ -8,7 +8,7 @@ using Ubq2.Logistics.Packing.Writers;
 
 namespace Ubq2.Logistics.Packing.Commands
 {
-    public record ModifyPackageCommand(string SiteId, string PackageId, DateTimeOffset RequestTime)
+    public record ModifyPackageCommand(string SiteId, string PackageId, DateTimeOffset UpdatedTime)
         : IRequest<VoidResult<ModifyPackageCommandStatus>>
     {
     }
@@ -25,7 +25,7 @@ namespace Ubq2.Logistics.Packing.Commands
             var commandObject = new PackageUpdateOneCommand(
                 SiteId: request.SiteId,
                 PackageId: request.PackageId,
-                UpdatedTime: request.RequestTime);
+                UpdatedTime: request.UpdatedTime);
 
             await Writer.Write(commandObject, cancellationToken);
 

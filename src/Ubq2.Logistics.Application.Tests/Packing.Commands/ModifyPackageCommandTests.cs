@@ -23,13 +23,12 @@ namespace Ubq2.Logistics.Packing.Commands
                 ["site:123, package:b"] = new(SiteId: "site:123", PackageId: "package:b", PackageStatus: PackageStatus.Open, DateTimeOffset.Now, DateTimeOffset.MinValue),
                 ["site:123, package:c"] = new(SiteId: "site:123", PackageId: "package:c", PackageStatus: PackageStatus.Open, DateTimeOffset.Now, DateTimeOffset.MinValue),
             };
-            var packageItems = new ConcurrentDictionary<string, PackageItem>();
 
             var logger = new NullLogger<ModifyPackageCommandHandler>();
-            var writer = new MemoryDbWriter(packageHeaders, packageItems);
+            var writer = new MemoryDbWriter(packageHeaders);
             var handler = new ModifyPackageCommandHandler(logger, writer);
 
-            var request = new ModifyPackageCommand(SiteId: "site:123", PackageId: "package:a", RequestTime: DateTimeOffset.Now);
+            var request = new ModifyPackageCommand(SiteId: "site:123", PackageId: "package:a", UpdatedTime: DateTimeOffset.Now);
 
             // act
             var response = await handler.Handle(request, default);
@@ -38,8 +37,8 @@ namespace Ubq2.Logistics.Packing.Commands
             Assert.NotNull(response);
             Assert.Contains(collection: packageHeaders, ph => ph.Value.PackageId == "package:a");
 
-            Assert.NotEqual(expected: packageHeaders["site:123, package:a"].CreatedTime, actual: request.RequestTime);
-            Assert.Equal(expected: packageHeaders["site:123, package:a"].UpdatedTime, actual: request.RequestTime);
+            Assert.NotEqual(expected: packageHeaders["site:123, package:a"].CreatedTime, actual: request.UpdatedTime);
+            Assert.Equal(expected: packageHeaders["site:123, package:a"].UpdatedTime, actual: request.UpdatedTime);
         }
     }
 }
