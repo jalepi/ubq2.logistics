@@ -6,7 +6,8 @@ Basic microservice for logistics
 - part00: setup C# solution and write some readme.md
 - part01: create application and domain projects and implement basic use cases for Package Headers
 - part02: further implement basic use cases for Package Items
-- part03: introduce Package Products
+- part03: first refactoring
+- part04: introduce Package Products
 
 ### Basic Entity definitions
 

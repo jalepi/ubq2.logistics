@@ -8,5 +8,6 @@ namespace Ubq2.Logistics.Packing.Readers
     public interface IReader
     {
         Task<IReadOnlyCollection<PackageHeader>> Read(PackageSelectManyQuery queryObject, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<PackageItem>> Read(PackageItemSelectManyQuery queryObject, CancellationToken cancellationToken);
     }
 }

@@ -20,9 +20,9 @@ namespace Ubq2.Logistics.Packing.Queries
                 ["site:123, package:b"] = new(SiteId: "site:123", PackageId: "package:b", PackageStatus: PackageStatus.Open, CreatedTime: DateTimeOffset.Now, UpdatedTime: DateTimeOffset.MinValue),
                 ["site:123, package:c"] = new(SiteId: "site:123", PackageId: "package:c", PackageStatus: PackageStatus.Open, CreatedTime: DateTimeOffset.Now, UpdatedTime: DateTimeOffset.MinValue),
             };
-
+            var packageItems = new ConcurrentDictionary<string, PackageItem>();
             var logger = new NullLogger<GetPackagesQueryHandler>();
-            var reader = new MemoryDbReader(packageHeaders);
+            var reader = new MemoryDbReader(packageHeaders, packageItems);
             var handler = new GetPackagesQueryHandler(logger, reader);
 
             var request = new GetPackagesQuery(SiteId: "site:123", PackageStatus: PackageStatus.Open);

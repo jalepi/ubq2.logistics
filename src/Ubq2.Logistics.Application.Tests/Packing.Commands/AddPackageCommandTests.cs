@@ -18,12 +18,13 @@ namespace Ubq2.Logistics.Packing.Commands
         {
             // arrange
             var packageHeaders = new ConcurrentDictionary<string, PackageHeader>();
+            var packageItems = new ConcurrentDictionary<string, PackageItem>();
 
             var logger = new NullLogger<AddPackageCommandHandler>();
-            var writer = new MemoryDbWriter(packageHeaders);
+            var writer = new MemoryDbWriter(packageHeaders, packageItems);
             var handler = new AddPackageCommandHandler(logger, writer);
 
-            var request = new AddPackageCommand(SiteId: "site:123", PackageId: "package:a", CreatedTime: DateTimeOffset.Now);
+            var request = new AddPackageCommand(SiteId: "site:123", PackageId: "package:a", RequestTime: DateTimeOffset.Now);
 
             // act
             var response = await handler.Handle(request, default);

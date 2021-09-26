@@ -9,7 +9,9 @@ using Ubq2.Logistics.Packing.Entities;
 
 namespace Ubq2.Logistics.Packing.Writers
 {
-    public record MemoryDbWriter(ConcurrentDictionary<string, PackageHeader> PackageHeaders)
+    public record MemoryDbWriter(
+        ConcurrentDictionary<string, PackageHeader> PackageHeaders,
+        ConcurrentDictionary<string, PackageItem> PackageItems)
         : IWriter
     {
         public async Task Write(PackageInsertOneCommand commandObject, CancellationToken cancellationToken)
@@ -24,7 +26,7 @@ namespace Ubq2.Logistics.Packing.Writers
                 UpdatedTime: DateTimeOffset.MinValue);
 
             var key = $"{commandObject.SiteId}, {commandObject.PackageId}";
-            
+
             PackageHeaders.TryAdd(key, entity);
         }
 
@@ -35,7 +37,7 @@ namespace Ubq2.Logistics.Packing.Writers
             var key = $"{commandObject.SiteId}, {commandObject.PackageId}";
 
             PackageHeaders.AddOrUpdate(
-                key: key, 
+                key: key,
                 addValueFactory: key => new PackageHeader(
                     SiteId: commandObject.SiteId,
                     PackageId: string.IsNullOrEmpty(commandObject.PackageId) ? $"{Guid.NewGuid()}" : commandObject.PackageId,
@@ -43,6 +45,36 @@ namespace Ubq2.Logistics.Packing.Writers
                     CreatedTime: commandObject.UpdatedTime,
                     UpdatedTime: DateTimeOffset.MinValue),
                 updateValueFactory: (key, value) => value with { UpdatedTime = commandObject.UpdatedTime });
+        }
+
+        public async Task Write(PackageItemInsertManyCommand commandObject, CancellationToken cancellationToken)
+        {
+            await Task.Yield();
+
+            foreach (var itemId in commandObject.ItemIds)
+            {
+                var key = $"{commandObject.SiteId}, {commandObject.PackageId}, {itemId}";
+
+                var entity = new PackageItem(
+                    SiteId: commandObject.SiteId,
+                    PackageId: commandObject.PackageId,
+                    CreatedTime: commandObject.CreatedTime,
+                    ItemId: itemId);
+
+                PackageItems.TryAdd(key, entity);
+            }
+        }
+
+        public async Task Write(PackageItemDeleteManyCommand commandObject, CancellationToken cancellationToken)
+        {
+            await Task.Yield();
+
+            foreach (var itemId in commandObject.ItemIds)
+            {
+                var key = $"{commandObject.SiteId}, {commandObject.PackageId}, {itemId}";
+
+                PackageItems.TryRemove(key, out var _);
+            }
         }
     }
 }
