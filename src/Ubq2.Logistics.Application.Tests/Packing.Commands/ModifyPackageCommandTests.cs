@@ -21,9 +21,10 @@ namespace Ubq2.Logistics.Packing.Commands
                 ["site:123, package:c"] = new(SiteId: "site:123", PackageId: "package:c", PackageStatus: PackageStatusDataObject.Open, DateTimeOffset.Now, DateTimeOffset.MinValue),
             };
             var packageItems = new ConcurrentDictionary<string, PackageItemDataObject>();
+            var packageProducts = new ConcurrentDictionary<string, PackageProductDataObject>();
 
             var logger = new NullLogger<ModifyPackageCommandHandler>();
-            var writer = new MemoryDbWriter(packageHeaders, packageItems);
+            var writer = new MemoryDbWriter(packageHeaders, packageItems, packageProducts);
             var handler = new ModifyPackageCommandHandler(logger, writer);
 
             var request = new ModifyPackageCommand(SiteId: "site:123", PackageId: "package:a", RequestTime: DateTimeOffset.Now);

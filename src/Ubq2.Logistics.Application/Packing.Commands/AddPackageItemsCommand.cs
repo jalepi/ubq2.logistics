@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ubq2.Logistics.Common.Entities;
+using Ubq2.Logistics.Packing.Providers;
 using Ubq2.Logistics.Packing.Writers;
 
 namespace Ubq2.Logistics.Packing.Commands
@@ -16,18 +18,29 @@ namespace Ubq2.Logistics.Packing.Commands
 
     public record AddPackageItemsCommandHandler(
         ILogger<AddPackageItemsCommandHandler> Logger,
-        IWriter Writer)
+        IWriter Writer,
+        IProductIdentifierProvider ProductIdentifierProvider)
         : IRequestHandler<AddPackageItemsCommand, VoidResult<AddPackageItemsCommandStatus>>
     {
         public async Task<VoidResult<AddPackageItemsCommandStatus>> Handle(AddPackageItemsCommand request, CancellationToken cancellationToken)
         {
-            var commandObject = new PackageItemInsertManyCommand(
+            var productIncrements = ProductIdentifierProvider.GetProductIds(request.ItemIds);
+
+            var packageProductIncrementMany = new PackageProductIncrementManyCommand(
+                SiteId: request.SiteId,
+                PackageId: request.PackageId,
+                UpdatedTime: request.RequestTime,
+                ProductIncrements: productIncrements);
+
+            await Writer.Write(packageProductIncrementMany, cancellationToken);
+
+            var packageItemInsertMany = new PackageItemInsertManyCommand(
                 SiteId: request.SiteId,
                 PackageId: request.PackageId,
                 CreatedTime: request.RequestTime,
                 ItemIds: request.ItemIds);
 
-            await Writer.Write(commandObject, cancellationToken);
+            await Writer.Write(packageItemInsertMany, cancellationToken);
 
             return VoidResult.Create(AddPackageItemsCommandStatus.Ok);
         }

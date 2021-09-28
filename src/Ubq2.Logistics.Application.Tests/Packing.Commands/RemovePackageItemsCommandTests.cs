@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ubq2.Logistics.Packing.DataObjects;
+using Ubq2.Logistics.Packing.Providers;
 using Ubq2.Logistics.Packing.Writers;
 using Xunit;
 
@@ -22,10 +23,17 @@ namespace Ubq2.Logistics.Packing.Commands
                 ["site:123, package:a, item:abc.002"] = new(SiteId: "site:123", PackageId: "package:a", ItemId: "item:abc.002", CreatedTime: DateTimeOffset.Now),
                 ["site:123, package:a, item:abc.003"] = new(SiteId: "site:123", PackageId: "package:a", ItemId: "item:abc.003", CreatedTime: DateTimeOffset.Now),
             };
+            var packageProducts = new ConcurrentDictionary<string, PackageProductDataObject>
+            {
+                ["site:123, package:a, item:abc."] = new(SiteId: "site:123", PackageId: "package:a", ProductId: "item:abc.", Count: 3, UpdatedTime: DateTimeOffset.Now),
+            };
 
             var logger = new NullLogger<RemovePackageItemsCommandHandler>();
-            var writer = new MemoryDbWriter(packageHeaders, packageItems);
-            var handler = new RemovePackageItemsCommandHandler(logger, writer);
+            var writer = new MemoryDbWriter(packageHeaders, packageItems, packageProducts); 
+            var pip = new LettersAndNumbersProductIdentifierProvider(
+                 ProductIdLength: 9,
+                 InvalidProductId: new string('-', 9));
+            var handler = new RemovePackageItemsCommandHandler(logger, writer, pip);
 
             var itemIds = new HashSet<string> {
                 "item:abc.001",
@@ -61,6 +69,12 @@ namespace Ubq2.Logistics.Packing.Commands
 
                 Assert.False(packageItems.ContainsKey(key));
             }
+
+            Assert.Single(packageProducts);
+            Assert.True(packageProducts.ContainsKey("site:123, package:a, item:abc."));
+            Assert.Equal(
+                expected: 1,
+                actual: packageProducts["site:123, package:a, item:abc."].Count);
         }
     }
 }

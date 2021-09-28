@@ -9,5 +9,6 @@ namespace Ubq2.Logistics.Packing.Writers
         Task Write(PackageHeaderUpdateOneCommand commandObject, CancellationToken cancellationToken);
         Task Write(PackageItemInsertManyCommand commandObject, CancellationToken cancellationToken);
         Task Write(PackageItemDeleteManyCommand commandObject, CancellationToken cancellationToken);
+        Task Write(PackageProductIncrementManyCommand commandObject, CancellationToken cancellationToken);
     }
 }

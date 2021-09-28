@@ -9,7 +9,8 @@ namespace Ubq2.Logistics.Packing.Writers
 {
     public record MemoryDbWriter(
         ConcurrentDictionary<string, PackageHeaderDataObject> PackageHeaders,
-        ConcurrentDictionary<string, PackageItemDataObject> PackageItems)
+        ConcurrentDictionary<string, PackageItemDataObject> PackageItems,
+        ConcurrentDictionary<string, PackageProductDataObject> PackageProducts)
         : IWriter
     {
         public async Task Write(PackageHeaderInsertOneCommand commandObject, CancellationToken cancellationToken)
@@ -72,6 +73,30 @@ namespace Ubq2.Logistics.Packing.Writers
                 var key = $"{commandObject.SiteId}, {commandObject.PackageId}, {itemId}";
 
                 PackageItems.TryRemove(key, out var _);
+            }
+        }
+
+        public async Task Write(PackageProductIncrementManyCommand commandObject, CancellationToken cancellationToken)
+        {
+            await Task.Yield();
+
+            foreach(var productIncrement in commandObject.ProductIncrements)
+            {
+                var key = $"{commandObject.SiteId}, {commandObject.PackageId}, {productIncrement.ProductId}";
+
+                if (PackageProducts.TryGetValue(key, out var value))
+                {
+                    PackageProducts[key] = value with { Count = value.Count + productIncrement.Count, UpdatedTime = commandObject.UpdatedTime };
+                }
+                else 
+                {
+                    PackageProducts[key] = new PackageProductDataObject(
+                        SiteId: commandObject.SiteId,
+                        PackageId: commandObject.PackageId,
+                        ProductId: productIncrement.ProductId,
+                        Count: productIncrement.Count,
+                        UpdatedTime: commandObject.UpdatedTime);
+                }
             }
         }
     }

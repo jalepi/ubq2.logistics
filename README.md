@@ -7,7 +7,8 @@ Basic microservice for logistics
 - part01: create application and domain projects and implement basic use cases for Package Headers
 - part02: further implement basic use cases for Package Items
 - part03: first refactoring
-- part04: introduce Package Products
+- part04: update Package Products (count for adding removing items)
+- part05: update Package Products (target quantity for adding or modifying packages)
 
 ### Basic Entity definitions
 
